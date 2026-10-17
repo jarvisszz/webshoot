@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Mind Detox Playground</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="top">
+    <a href="#home" class="brand">🌿 Mind Detox Playground</a>
+    <nav aria-label="Main">
+      <a href="#home">Home</a>
+      <a href="#calm">Calm</a>
+      <a href="#scroll">Scroll reset</a>
+      <a href="#focus">Focus</a>
+      <a href="#dump">Dump</a>
+      <a href="#wind">Wind down</a>
+      <a href="#play">Play</a>
+      <a href="#space">My space</a>
+      <a href="#help">Get help</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <p id="note" class="note" role="status" hidden></p>
+
+    <!-- HOME / CHECK-IN -->
+    <section class="view" id="home" hidden>
+      <h1>Hey, take a breath.</h1>
+      <p class="lead">No pressure here. This takes about 2 minutes, and everything stays on your device.</p>
+
+      <h2>What's going on right now?</h2>
+      <div class="choices" id="feelings">
+        <button class="btn" data-feel="anxious" aria-pressed="false">😰 Anxious</button>
+        <button class="btn" data-feel="overwhelmed" aria-pressed="false">🌊 Overwhelmed</button>
+        <button class="btn" data-feel="focus" aria-pressed="false">🎯 Can't focus</button>
+        <button class="btn" data-feel="switchoff" aria-pressed="false">🔌 Can't switch off</button>
+        <button class="btn" data-feel="scrolling" aria-pressed="false">📱 Stuck scrolling</button>
+        <button class="btn" data-feel="sleep" aria-pressed="false">🌙 Can't sleep</button>
+      </div>
+
+      <div id="timeStep" hidden>
+        <h2 tabindex="-1">How much time do you have?</h2>
+        <div class="choices">
+          <button class="btn" data-min="1">1 min</button>
+          <button class="btn" data-min="5">5 min</button>
+          <button class="btn" data-min="15">15 min</button>
+        </div>
+      </div>
+
+      <p class="small">Prefer to browse? Use the menu at the top. Nothing here is a test, and nothing is scored.</p>
+    </section>
+
+    <!-- CALM -->
+    <section class="view" id="calm" hidden>
+      <h1>Calm now</h1>
+
+      <div class="card">
+        <h2>Guided breathing</h2>
+        <div class="row">
+          <label>Pattern
+            <select id="breathPattern">
+              <option value="box">Box (4-4-4-4)</option>
+              <option value="478">4-7-8 (for winding down)</option>
+              <option value="sigh">Physiological sigh (fast calm)</option>
+            </select>
+          </label>
+          <label>Length
+            <select id="breathMin">
+              <option value="1">1 min</option>
+              <option value="2" selected>2 min</option>
+              <option value="5">5 min</option>
+            </select>
+          </label>
+        </div>
+        <div class="breath-stage" aria-hidden="true"><div id="circle" class="circle"></div></div>
+        <p id="breathText" class="big" aria-live="polite">Ready when you are</p>
+        <button class="btn primary" id="breathBtn">Start</button>
+      </div>
+
+      <div class="card">
+        <h2>5-4-3-2-1 grounding</h2>
+        <p id="groundText" class="big">Pulls your attention back to the room you're in.</p>
+        <button class="btn" id="groundBtn">Begin</button>
+      </div>
+
+      <div class="card" id="lofiWrap">
+        <h2>Soft music (optional)</h2>
+        <audio id="lofi" controls loop preload="none">
+          <source src="lofi.mp3" type="audio/mpeg">
+        </audio>
+        <p class="small">Plays only when you press play.</p>
+      </div>
+    </section>
+
+    <!-- SCROLL RESET -->
+    <section class="view" id="scroll" hidden>
+      <h1>Scroll reset</h1>
+      <p class="lead">Urges pass in a few minutes if you don't feed them. You're not weak, these apps are built to hook you.</p>
+
+      <div class="card">
+        <h2>Urge timer</h2>
+        <p>Wait 10 minutes before you open the app. Breathe or stretch while you wait.</p>
+        <p id="urgeTime" class="timer">10:00</p>
+        <p id="urgeMsg" class="small" aria-live="polite"></p>
+        <button class="btn primary" id="urgeBtn">Start waiting</button>
+        <a class="btn" href="#calm">Breathe while I wait</a>
+      </div>
+
+      <div class="card">
+        <h2>Intention check</h2>
+        <label for="intent">What am I opening my phone for?</label>
+        <input type="text" id="intent" placeholder="e.g. reply to Rohan, check the bus time" maxlength="120">
+        <div class="row">
+          <label>Time limit
+            <select id="intentLimit">
+              <option value="5">5 min</option>
+              <option value="10" selected>10 min</option>
+              <option value="15">15 min</option>
+            </select>
+          </label>
+          <button class="btn" id="intentBtn">Set my intention</button>
+        </div>
+        <p id="intentOut" class="big" aria-live="polite"></p>
+      </div>
+
+      <div class="card">
+        <h2>My dopamine menu</h2>
+        <p class="small">Swap the scroll for something that actually refills you. Add your own.</p>
+        <div id="menuLists"></div>
+        <div class="row">
+          <input type="text" id="menuInput" placeholder="Add an activity" maxlength="60" aria-label="New activity">
+          <select id="menuEffort" aria-label="Effort level">
+            <option value="low">Low effort</option>
+            <option value="medium">Medium effort</option>
+            <option value="high">High effort</option>
+          </select>
+          <button class="btn" id="menuAdd">Add</button>
+        </div>
+        <button class="btn primary" id="menuPick">Surprise me</button>
+        <p id="menuPickOut" class="big" aria-live="polite"></p>
+      </div>
+
+      <div class="card">
+        <h2>Today's scroll time (self-report)</h2>
+        <p class="small">A website can't see your phone usage, so a rough guess is fine. This is for awareness, not guilt.</p>
+        <div class="row">
+          <input type="number" id="scrollMin" min="0" max="1440" placeholder="Minutes" aria-label="Minutes scrolled today">
+          <button class="btn" id="scrollSave">Save</button>
+        </div>
+        <div id="scrollChart" class="bars" aria-label="Last 7 days of scroll time"></div>
+      </div>
+    </section>
+
+    <!-- FOCUS -->
+    <section class="view" id="focus" hidden>
+      <h1>Focus</h1>
+      <div class="card">
+        <p id="pomoMode" class="small">Focus time</p>
+        <p id="pomoTime" class="timer">25:00</p>
+        <p id="pomoMsg" class="small" aria-live="polite"></p>
+        <div class="row">
+          <label>Focus length
+            <select id="pomoLen">
+              <option value="5">5 min</option>
+              <option value="10">10 min</option>
+              <option value="25" selected>25 min</option>
+              <option value="45">45 min</option>
+            </select>
+          </label>
+        </div>
+        <button class="btn primary" id="pomoStart">Start</button>
+        <button class="btn" id="pomoReset">Reset</button>
+        <button class="btn" id="pomoBreak">5 min break</button>
+        <p class="small">Tip: put your phone in another room. Starting small (5 min) counts.</p>
+      </div>
+    </section>
+
+    <!-- DUMP -->
+    <section class="view" id="dump" hidden>
+      <h1>Brain dump</h1>
+      <div class="card">
+        <label for="dumpArea">Get everything out of your head. No one else will see this.</label>
+        <textarea id="dumpArea" placeholder="Drop it all here, messy is fine..."></textarea>
+        <button class="btn" id="dumpBurn">🔥 Burn it</button>
+      </div>
+      <div class="card">
+        <h2>Now pick just one thing</h2>
+        <label for="oneThing">What is the ONE thing you'll do next?</label>
+        <input type="text" id="oneThing" placeholder="Smallest next step" maxlength="120">
+        <p id="oneOut" class="big"></p>
+      </div>
+    </section>
+
+    <!-- WIND DOWN -->
+    <section class="view" id="wind" hidden>
+      <h1>Wind down</h1>
+
+      <div class="card">
+        <h2>Tonight's wind-down</h2>
+        <ul class="checks" id="windList"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Worry time</h2>
+        <p class="small">Write the worry down and park it. You can look at it tomorrow, not tonight.</p>
+        <div class="row">
+          <input type="text" id="worryInput" placeholder="What's on your mind?" maxlength="140" aria-label="A worry to park">
+          <button class="btn" id="worryAdd">Park it</button>
+        </div>
+        <ul class="plain" id="worryList"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Body scan</h2>
+        <p id="scanText" class="big">Move through your body slowly, one area at a time.</p>
+        <button class="btn" id="scanBtn">Begin</button>
+      </div>
+
+      <div class="card">
+        <h2>Brown noise</h2>
+        <button class="btn" id="noiseBtn" aria-pressed="false">Play</button>
+        <label>Volume <input type="range" id="noiseVol" min="0" max="100" value="30"></label>
+      </div>
+    </section>
+
+    <!-- PLAY -->
+    <section class="view" id="play" hidden>
+      <h1>Play</h1>
+      <p class="lead">Pop the bubbles. No timer, no score to beat.</p>
+      <div class="card">
+        <div id="bubbles" class="bubbles"></div>
+        <p id="popCount" class="small" aria-live="polite">Popped: 0</p>
+        <button class="btn" id="popReset">Reset</button>
+      </div>
+    </section>
+
+    <!-- MY SPACE -->
+    <section class="view" id="space" hidden>
+      <h1>My space</h1>
+
+      <div class="card">
+        <h2>How are you, right now?</h2>
+        <div class="choices" id="moodBtns">
+          <button class="btn" data-mood="1" aria-label="Very low">😞</button>
+          <button class="btn" data-mood="2" aria-label="Low">😕</button>
+          <button class="btn" data-mood="3" aria-label="Okay">😐</button>
+          <button class="btn" data-mood="4" aria-label="Good">🙂</button>
+          <button class="btn" data-mood="5" aria-label="Great">😄</button>
+        </div>
+        <div id="moodChart" class="bars" aria-label="Mood over the last 7 days"></div>
+        <p id="lowMood" class="note" hidden>It's been a heavy few days. Talking to someone can really help. <a href="#help">See who you can reach</a>.</p>
+      </div>
+
+      <div class="card">
+        <h2>Small wins</h2>
+        <div class="row">
+          <input type="text" id="winInput" placeholder="Something small that went okay" maxlength="120" aria-label="A small win">
+          <button class="btn" id="winAdd">Add</button>
+        </div>
+        <ul class="plain" id="winList"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Your data</h2>
+        <p class="small">Everything is stored only in this browser. Nothing is sent anywhere.</p>
+        <button class="btn" id="wipeBtn">Delete all my data</button>
+      </div>
+    </section>
+
+    <!-- HELP -->
+    <section class="view" id="help" hidden>
+      <h1>Need urgent help?</h1>
+      <p class="lead">If you're in danger or thinking about hurting yourself, please reach out to a real person now. You don't have to handle this alone.</p>
+      <div class="card">
+        <ul class="plain">
+          <li><strong>Tele-MANAS (India, free, 24x7):</strong> <a href="tel:14416">14416</a> or <a href="tel:18008914416">1800-891-4416</a></li>
+          <li><strong>Emergency:</strong> <a href="tel:112">112</a></li>
+          <li><strong>Your college counselling cell:</strong> add the contact here</li>
+          <li><strong>A friend, hostel mate or family member:</strong> tell them "I'm not okay, can you sit with me?"</li>
+        </ul>
+      </div>
+      <p class="small">This site is a self-help tool. It is not therapy or medical advice.</p>
+    </section>
+  </main>
+
+  <footer>
+    <a class="urgent" href="#help">Need urgent help?</a>
+    <p class="small">Self-help only, not a substitute for professional care. Your data stays on your device.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
